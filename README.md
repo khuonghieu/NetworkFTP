@@ -26,7 +26,7 @@ $python3 tcp_client.py [ip address] [port] [file name] [directory to save]
 
 Example:  
 Run server:  
-$python3 tcp_server.py 9089 serverFile
+$python3 tcp_server.py 9089 serverFile  
 Run client:  
 $python3 tcp_client.py 127.0.0.1 9089 test2.txt clientFile
 
