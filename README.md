@@ -24,6 +24,12 @@ $python3 tcp_server.py [port] [directory to find files]
 4. Run client with parameters:
 $python3 tcp_client.py [ip address] [port] [file name] [directory to save]
 
+Example:  
+Run server:  
+$python3 tcp_server.py 9089 serverFile
+Run client:  
+$python3 tcp_client.py 127.0.0.1 9089 test2.txt clientFile
+
 # Test cases:
 Test case 1: Request an invalid file (file not exist in server directory).
 - Test result: server print out "File X does not exist in the server" and close the connection.
