@@ -1,7 +1,7 @@
 ﻿# Student Information:
-Name: Hieu Khuong
-Course: CIS4307 - Distributed Systems
-Spring 2020
+Name: Hieu Khuong  
+Course: CIS4307 - Distributed Systems  
+Spring 2020  
 Homework 2 - Network File Transfer
 
 # Structure of program:
