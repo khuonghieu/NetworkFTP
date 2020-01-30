@@ -39,7 +39,7 @@ def deleteUntilAvailable(lru, cache, currentSize, filename):
         popped = lru.pop()
         cache.pop(popped)
         currentSize -= getSize(popped)
-        print("removed", popped)
+        print("Removed", popped,"from cache and LRU")
     return currentSize
 
 def main():
@@ -62,6 +62,7 @@ def main():
         os.chdir(directory)
     else:
         print("Can't find dir")
+        return
     print(os.getcwd())
 
     #Create socket

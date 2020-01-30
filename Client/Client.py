@@ -29,7 +29,11 @@ def main():
     # Create a socket object
     s = socket.socket()
     # connect to the server on local computer
-    s.connect((serverIP, port))
+    try:
+        s.connect((serverIP, port))
+    except ConnectionRefusedError:
+        print("Server dead or not found")
+        return
 
     #Send file name
     s.send(fileName.encode())
