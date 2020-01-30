@@ -4,7 +4,7 @@ import socket
 import os
 import sys
 
-MAXCACHE = 8000000
+MAXCACHE = 64000000
 
 #Get size of a file
 def getSize(filename):
@@ -87,6 +87,7 @@ def main():
         filename = c.recv(1024).decode()
         print("Client with ip", addr, "requested",filename)
         
+        #Check if file exists
         if not os.path.exists(filename):
             print("File",filename,"does not exist")
         else:
@@ -94,16 +95,25 @@ def main():
             if(alreadyInCache(cache,filename)):
                 c.send(cache[filename])
                 print("Cache hit. File",filename,"sent to client")
+            #Not in cache
             else:
-                #Cache overload
-                if (currentSize + getSize(filename) > MAXCACHE):
-                    currentSize = deleteUntilAvailable(lru,cache,currentSize,filename)
-                currentSize = addToCacheAndLRU(lru,cache,filename,currentSize)
-                c.send(cache[filename])
-                print("Cache miss. File",filename,"sent to client")
+                #File bigger than cache limit
+                if(getSize(filename)>MAXCACHE):
+                    with open(filename, 'r') as bigfile:
+                        content = bigfile.read().replace('\n', '').encode()
+                    c.send(content)
+                    print("Cache miss. File",filename,"sent to client")
+                #File smaller than cache limit
+                else:
+                    #Cache overloaded
+                    if (currentSize + getSize(filename) > MAXCACHE):
+                        currentSize = deleteUntilAvailable(lru,cache,currentSize,filename)
+                    currentSize = addToCacheAndLRU(lru,cache,filename,currentSize)
+                    c.send(cache[filename])
+                    print("Cache miss. File",filename,"sent to client")
         # Close the connection with the client
         c.close()
-        print("Current cache:", currentSize,"bytes")
+        print("Current cache memory:", currentSize,"bytes")
         print()
 
 if __name__ == '__main__':
