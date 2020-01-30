@@ -14,7 +14,7 @@ def getSize(filename):
 def fileContent(filename):
     #content = b""
     with open(filename, 'r') as f:
-        content = f.read().encode()
+        content = f.read().replace('\n', '').encode()
     return content
 
 #Check if a file already in cache/lru
@@ -33,7 +33,7 @@ def addToCacheAndLRU(lru,cache,filename, currentSize):
     currentSize+=getSize(filename)
     return currentSize
 
-#Pop lru and delete cache until enough size available for new file
+#Pop lru and delete cache until enough memory for new file
 def deleteUntilAvailable(lru, cache, currentSize, filename):
     while(currentSize + getSize(filename)>MAXCACHE):
         popped = lru.pop()
@@ -86,17 +86,20 @@ def main():
         filename = c.recv(1024).decode()
         print("Client with ip", addr, "requested",filename)
         
-        #Check cache
-        if(alreadyInCache(cache,filename)):
-            c.send(cache[filename])
-            print("Cache hit. File",filename,"sent to client")
+        if not os.path.exists(filename):
+            print("File",filename,"does not exist")
         else:
-            #Cache overload
-            if (currentSize + getSize(filename) > MAXCACHE):
-                currentSize = deleteUntilAvailable(lru,cache,currentSize,filename)
-            currentSize = addToCacheAndLRU(lru,cache,filename,currentSize)
-            c.send(cache[filename])
-            print("Cache miss. File",filename,"sent to client")
+            #Check cache
+            if(alreadyInCache(cache,filename)):
+                c.send(cache[filename])
+                print("Cache hit. File",filename,"sent to client")
+            else:
+                #Cache overload
+                if (currentSize + getSize(filename) > MAXCACHE):
+                    currentSize = deleteUntilAvailable(lru,cache,currentSize,filename)
+                currentSize = addToCacheAndLRU(lru,cache,filename,currentSize)
+                c.send(cache[filename])
+                print("Cache miss. File",filename,"sent to client")
         # Close the connection with the client
         c.close()
         print("Current cache:", currentSize,"bytes")
