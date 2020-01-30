@@ -5,7 +5,7 @@ Spring 2020
 Homework 2 - Network File Transfer
 
 # Structure of program:
-There are 2 Python files: Server.py (TCP client for retrieving files) and Client.py (TCP server for serving the requested files).
+There are 2 Python files: tcp_client.py (TCP client for retrieving files) and tcp_server.py (TCP server for serving the requested files).
 Flow of the program:
 1. The server would open a socket with a certain port and bind to to that port. Server will listen for any connection to that socket.
 2. The client would connect to the server using a certain IP address and port pair. Client would send the requested file name to server, then waiting for server response.
@@ -19,10 +19,10 @@ The cache has 3 parts:
 # Execute the code:
 1. Open terminal
 2. Run server with parameters: 
-$python3 Server.py [port] [directory to find files] 
+$python3 tcp_server.py [port] [directory to find files] 
 3. Open another terminal
 4. Run client with parameters:
-$python3 Client.py [ip address] [port] [file name] [directory to save]
+$python3 tcp_client.py [ip address] [port] [file name] [directory to save]
 
 # Test cases:
 Test case 1: Request an invalid file (file not exist in server directory).
