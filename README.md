@@ -26,7 +26,7 @@ $python3 tcp_client.py [ip address] [port] [file name] [directory to save]
 
 Example:  
 Run server:  
-$python3 tcp_server.py 9089 serverFile  
+$python3 tcp_server.py 9089 serverFile
 Run client:  
 $python3 tcp_client.py 127.0.0.1 9089 test2.txt clientFile
 
@@ -40,8 +40,11 @@ Test case 2: Client tries to connect to an inactive server.
 Test case 3: Client use different port number from server.
 - Test result: client print out "Server dead or not found" and exit.
 
-Test case 4: Server use invalid directory
-- Server print out "Cannot find directory" and exit
+Test case 4: Server use invalid directory.
+- Server print out "Cannot find directory" and exit.
 
-Test case 5: Client use invalid directory
-- Client print out "Cannot find directory" and exit
+Test case 5: Client use invalid directory.
+- Client print out "Cannot find directory" and exit.
+
+Test case 6: Client request file that is bigger than cache limit.
+- Server still sends the content to client, but would not load the content into cache.
